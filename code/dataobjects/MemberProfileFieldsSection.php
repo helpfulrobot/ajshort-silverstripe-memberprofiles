@@ -6,37 +6,43 @@
  * @package    silverstripe-memberprofiles
  * @subpackage dataobjects
  */
-class MemberProfileFieldsSection extends MemberProfileSection {
+class MemberProfileFieldsSection extends MemberProfileSection
+{
 
-	public function getDefaultTitle() {
-		return _t('MemberProfiles.PROFILEFIELDSLIST', 'Profile Fields List');
-	}
+    public function getDefaultTitle()
+    {
+        return _t('MemberProfiles.PROFILEFIELDSLIST', 'Profile Fields List');
+    }
 
-	public function forTemplate() {
-		return $this->renderWith('MemberProfileFieldsSection');
-	}
+    public function forTemplate()
+    {
+        return $this->renderWith('MemberProfileFieldsSection');
+    }
 
-	public function Fields() {
-		$fields = $this->Parent()->Fields()->where('"PublicVisibility" <> \'Hidden\'');
-		$public = $this->member->getPublicFields();
-		$result = new ArrayList();
+    public function Fields()
+    {
+        $fields = $this->Parent()->Fields()->where('"PublicVisibility" <> \'Hidden\'');
+        $public = $this->member->getPublicFields();
+        $result = new ArrayList();
 
-		foreach($fields as $field) {
-			if($field->PublicVisibility == 'MemberChoice') {
-				if(!in_array($field->MemberField, $public)) continue;
-			}
+        foreach ($fields as $field) {
+            if ($field->PublicVisibility == 'MemberChoice') {
+                if (!in_array($field->MemberField, $public)) {
+                    continue;
+                }
+            }
 
-			$result->push(new ArrayData(array(
-				'Title' => $field->Title,
-				'Value' => $this->member->{$field->MemberField}
-			)));
-		}
+            $result->push(new ArrayData(array(
+                'Title' => $field->Title,
+                'Value' => $this->member->{$field->MemberField}
+            )));
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public function ShowTitle() {
-		return false;
-	}
-
+    public function ShowTitle()
+    {
+        return false;
+    }
 }
